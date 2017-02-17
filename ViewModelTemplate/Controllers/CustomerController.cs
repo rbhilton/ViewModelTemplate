@@ -19,7 +19,10 @@ namespace ViewModelTemplate.Controllers
         public ActionResult Orders(string id)
         {
             DBRepository dbr = new DBRepository();
-            CustomerOrders customerOrders = dbr.getCustomerOrders(id);
+            CustomerOrders customerOrders = dbr.getCustomerOrdersEF(id);
+            /*** or use SQL
+             * CustomerOrders customerOrders = dbr.getCustomerOrdersEF(id);
+             * ***/
 
             return View(customerOrders);
         }

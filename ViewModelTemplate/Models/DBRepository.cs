@@ -5,6 +5,7 @@ using System.Data.Entity;
 using System.Web;
 using ViewModelTemplate.Models;
 using System.ComponentModel.DataAnnotations;
+using System.Data.SqlClient;
 
 namespace ViewModelTemplate.Models
 {
@@ -19,14 +20,35 @@ namespace ViewModelTemplate.Models
             return customers;
         }
 
-        public CustomerOrders getCustomerOrders(string custNo)
+        /***** Use EF to get the customer orders *****/
+        public CustomerOrders getCustomerOrdersEF(string custNo)
         {
             CustomerOrders customerOrders = new CustomerOrders();
             OrderEntryDbContext db = new OrderEntryDbContext();
             customerOrders.customer = db.customers.Find(custNo);
-            customerOrders.orders = db.orders.ToList<OrderTbl>();
             var query = (from ot in db.orders where ot.CustNo == custNo select ot);
             customerOrders.orders = query.ToList();
+
+            return customerOrders;
+        }
+
+        /***** Use SQL to get the customer orders *****/
+        public CustomerOrders getCustomerOrdersSQL(string custNo)
+        {
+            CustomerOrders customerOrders = new CustomerOrders();
+            OrderEntryDbContext db = new OrderEntryDbContext();
+            List<SqlParameter> sqlParams = new List<SqlParameter>();
+            sqlParams.Add(new SqlParameter("@CustNo", custNo));
+
+            string sql = "SELECT * FROM Customer WHERE CustNo = @CustNo";
+            customerOrders.customer =
+                db.customers.SqlQuery(sql, sqlParams.ToArray()).First();
+
+            sqlParams.Clear();
+            sqlParams.Add(new SqlParameter("@CustNo", custNo));
+            sql = "SELECT * FROM OrderTbl WHERE CustNo = @CustNo";
+            customerOrders.orders =
+                db.orders.SqlQuery(sql, sqlParams.ToArray()).ToList();
 
             return customerOrders;
         }
