@@ -16,7 +16,12 @@ namespace ViewModelTemplate.Models
         public List<Customer> getCustomers()
         {
             OrderEntryDbContext db = new OrderEntryDbContext();
-            List<Customer> customers = db.customers.ToList();
+            List<Customer> customers = new List<Customer>();
+            try
+            {
+                customers = db.customers.ToList();
+            } catch (Exception ex)
+            { Console.WriteLine(ex.Message); }
             return customers;
         }
 
@@ -25,9 +30,12 @@ namespace ViewModelTemplate.Models
         {
             CustomerOrders customerOrders = new CustomerOrders();
             OrderEntryDbContext db = new OrderEntryDbContext();
-            customerOrders.customer = db.customers.Find(custNo);
-            var query = (from ot in db.orders where ot.CustNo == custNo select ot);
-            customerOrders.orders = query.ToList();
+            try
+            {
+                customerOrders.customer = db.customers.Find(custNo);
+                var query = (from ot in db.orders where ot.CustNo == custNo select ot);
+                customerOrders.orders = query.ToList();
+            } catch (Exception ex) { Console.WriteLine(ex.Message); }
 
             return customerOrders;
         }
@@ -40,16 +48,18 @@ namespace ViewModelTemplate.Models
             List<SqlParameter> sqlParams = new List<SqlParameter>();
             sqlParams.Add(new SqlParameter("@CustNo", custNo));
 
-            string sql = "SELECT * FROM Customer WHERE CustNo = @CustNo";
-            customerOrders.customer =
-                db.customers.SqlQuery(sql, sqlParams.ToArray()).First();
+            try
+            {
+                string sql = "SELECT * FROM Customer WHERE CustNo = @CustNo";
+                customerOrders.customer =
+                    db.customers.SqlQuery(sql, sqlParams.ToArray()).First();
 
-            sqlParams.Clear();
-            sqlParams.Add(new SqlParameter("@CustNo", custNo));
-            sql = "SELECT * FROM OrderTbl WHERE CustNo = @CustNo";
-            customerOrders.orders =
-                db.orders.SqlQuery(sql, sqlParams.ToArray()).ToList();
-
+                sqlParams.Clear();
+                sqlParams.Add(new SqlParameter("@CustNo", custNo));
+                sql = "SELECT * FROM OrderTbl WHERE CustNo = @CustNo";
+                customerOrders.orders =
+                    db.orders.SqlQuery(sql, sqlParams.ToArray()).ToList();
+            } catch (Exception ex) { Console.WriteLine(ex.Message); }
             return customerOrders;
         }
     }
