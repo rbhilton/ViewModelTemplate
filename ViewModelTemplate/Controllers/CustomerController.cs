@@ -27,5 +27,19 @@ namespace ViewModelTemplate.Controllers
             return View(customerOrders);
         }
 
+        public ActionResult ProdDetailsPartial(string ordNo)
+        {
+            DBRepository dbr = new DBRepository();
+            ProductDetailsList prodDetailsList = dbr.getProductDetailsList(ordNo);
+
+            return PartialView("ProdDetailsPartial", prodDetailsList);
+        }
+
+        // Just to test partial view rending.
+        public ActionResult loadTestView()
+        {
+            return PartialView("TestPartial");
+        }
+
     }
 }

@@ -62,6 +62,48 @@ namespace ViewModelTemplate.Models
             } catch (Exception ex) { Console.WriteLine(ex.Message); }
             return customerOrders;
         }
+
+        // Get the list of products for a particular order, for a particular customer.
+        public ProductDetailsList getProductDetailsList(string ordNo)
+        {
+            CustomerOrders customerOrders = new Models.CustomerOrders();
+            OrderEntryDbContext db = new OrderEntryDbContext();
+            ProductDetailsList prodDetailsList = new ProductDetailsList();
+            List<SqlParameter> sqlParams = new List<SqlParameter>();
+            sqlParams.Add(new SqlParameter("@OrdNo", ordNo));
+            //sqlParams.Add(new SqlParameter("@CustNo", custNo));
+
+            try
+            {
+                // Create the query for all orders for a customer.
+                string sql =
+                    "SELECT P.ProdNo, ProdName, Qty, ProdPrice " +
+                    "FROM Customer C " +
+                    "INNER JOIN OrderTbl OTbl " +
+                    "ON C.CustNo = OTbl.CustNo " +
+                    "INNER JOIN OrdLine OL " +
+                    "ON OTbl.OrdNo = OL.OrdNo " +
+                    "INNER JOIN Product P " +
+                    "ON OL.ProdNo = P.ProdNo " +
+                    "WHERE OTbl.OrdNo = @OrdNo";
+
+                // Put the results of sql into a list
+                /*foreach (var item in db.Database.SqlQuery<ProductDetails>(sql, sqlParams.ToArray()).ToList())
+                {
+                    ProductDetails prodDetail = new ProductDetails()
+                    {
+                        ProdNo = item.ProdNo,
+                        ProdName = item.ProdName,
+                        Qty = item.Qty,
+                        ProdPrice = item.ProdPrice
+                    };
+                    prodDetailsList.productDetailsList.Add(prodDetail);
+                }*/
+                // Or:
+                prodDetailsList.productDetailsList = db.Database.SqlQuery<ProductDetails>(sql, sqlParams.ToArray()).ToList();
+            } catch (Exception ex) { Console.WriteLine(ex.Message); }
+            return prodDetailsList;
+        }
     }
     /***************** View Models **********************/
 
@@ -77,6 +119,40 @@ namespace ViewModelTemplate.Models
         public string custNo { get; set; }
         public Customer customer { get; set; }
         public List<OrderTbl> orders { get; set; }
+    }
+
+    public class ProductDetails
+    {
+        public ProductDetails()
+        {
+            this.ProdNo = "";
+            this.ProdName = "";
+            this.Qty = 0;
+            this.ProdPrice = 0.0M;
+        }
+
+        [Key]
+        [Display(Name = "Product ID")]
+        public string ProdNo { get; set; }
+
+        [Display(Name = "Name")]
+        public string ProdName { get; set; }
+
+        [Display(Name = "Quantity")]
+        public int Qty { get; set; }
+
+        [Display(Name = "Price")]
+        public decimal ProdPrice { get; set; }
+    }
+
+    public class ProductDetailsList
+    {
+        public List<ProductDetails> productDetailsList { get; set; }
+
+        public ProductDetailsList()
+        {
+            this.productDetailsList = new List<ProductDetails>();
+        }
     }
 
 }

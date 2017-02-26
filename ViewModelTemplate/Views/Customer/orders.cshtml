@@ -1,8 +1,15 @@
-﻿@model ViewModelTemplate.Models.CustomerOrders
+﻿@using ViewModelTemplate.Models
+@model CustomerOrders
 
 @{
     ViewBag.Title = "orders";
 }
+
+<script>
+    $(document).ready(function () {
+        $()
+    });
+</script>
 
 <h2>Customer Orders</h2>
 
@@ -30,6 +37,7 @@
                 <tr>
                     <td>
                         @Html.DisplayFor(Modelitem => item.OrdNo)
+                        @*@Html.ActionLink(item.OrdNo, "ProdDetailsPartial", new { ordNo = item.OrdNo })*@
                     </td>
                     <td>@{ 
                         var shortDate = item.OrdDate.ToShortDateString();
@@ -39,11 +47,21 @@
                     <td>
                         @Html.DisplayFor(Modelitem => item.OrdName)
                     </td>
+                    <td>
+                        @*@Ajax.ActionLink("Details", "ProdDetailsPartial", "Customer", new { ordNo = item.OrdNo },
+                            new AjaxOptions { UpdateTargetId = "prodDetailsDiv" } )*@
+                        @*@Ajax.RouteLink("Details", "ProdDetailsPartial", "Customer", 
+                            new AjaxOptions { UpdateTargetId = "prodDetailsDiv" }, new { ordNo = item.OrdNo })*@
+                        @Html.ActionLink("Details", "ProdDetailsPartial", new { ordNo = item.OrdNo})
+                        <button class="btn btn-success">Details</button>
+                    </td>
                 </tr>
             }
         </table>
     </div>
-    
+    <div id="prodDetailsDiv">
+        @Html.Partial("ProdDetailsPartial", new ProductDetailsList())
+    </div>
 </div>
 <p>
     <br/>
