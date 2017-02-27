@@ -8,6 +8,7 @@
 <script>
     $(document).ready(function () {
         $(".renderView").click(function (evt) {
+            
             var cell = $(evt.target).parents("tr").find("td:first")
             var OrdNo = cell.text().replace(/[\n]/g, '').replace(/[ ]/g, '')
             $("#prodDetailsDiv").load("/Customer/ProdDetailsPartial", { ordNo: OrdNo });
@@ -29,7 +30,7 @@
         @Html.DisplayFor(model => model.customer.CustState) 
         @Html.DisplayFor(model => model.customer.CustZip)
     </div>
-    <div class="col-md-9">
+    <div class="col-md-5">
         <table>
             <tr>
                 <th>@Html.DisplayNameFor(model => model.orders[0].OrdNo)</th>
@@ -56,14 +57,14 @@
                             new AjaxOptions { UpdateTargetId = "prodDetailsDiv" } )*@
                         @*@Ajax.RouteLink("Details", "ProdDetailsPartial", "Customer", 
                             new AjaxOptions { UpdateTargetId = "prodDetailsDiv" }, new { ordNo = item.OrdNo })*@
-                        @Html.ActionLink("Details", "ProdDetailsPartial", new { ordNo = item.OrdNo})
+                        @*@Html.ActionLink("Details", "ProdDetailsPartial", new { ordNo = item.OrdNo})*@
                         <button class="btn btn-success renderView">Details</button>
                     </td>
                 </tr>
             }
         </table>
     </div>
-    <div id="prodDetailsDiv">
+    <div id="prodDetailsDiv" class="col-md-offset-7">
         @*@Html.Partial("ProdDetailsPartial", new ProductDetailsList())*@
     </div>
 </div>

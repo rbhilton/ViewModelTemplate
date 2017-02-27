@@ -101,6 +101,7 @@ namespace ViewModelTemplate.Models
                 }*/
                 // Or:
                 prodDetailsList.productDetailsList = db.Database.SqlQuery<ProductDetails>(sql, sqlParams.ToArray()).ToList();
+                prodDetailsList.OrdNo = ordNo;
             } catch (Exception ex) { Console.WriteLine(ex.Message); }
             return prodDetailsList;
         }
@@ -148,6 +149,8 @@ namespace ViewModelTemplate.Models
     public class ProductDetailsList
     {
         public List<ProductDetails> productDetailsList { get; set; }
+
+        public string OrdNo { get; set; }
 
         public ProductDetailsList()
         {

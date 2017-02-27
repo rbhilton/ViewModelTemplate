@@ -31,6 +31,7 @@ namespace ViewModelTemplate.Controllers
         {
             DBRepository dbr = new DBRepository();
             ProductDetailsList prodDetailsList = dbr.getProductDetailsList(ordNo);
+            
 
             return PartialView("ProdDetailsPartial", prodDetailsList);
         }
