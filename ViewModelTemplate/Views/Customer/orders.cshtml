@@ -7,7 +7,9 @@
 
 <script>
     $(document).ready(function () {
-        $("button").click(function () {
+        $(".renderView").click(function (evt) {
+            var cell = $(evt.target).closest("tr").children().first();
+            var OrdNo = cell.text();
             $("#prodDetailsDiv").load("/Customer/ProdDetailsPartial", { ordNo: OrdNo });
         });
     });
@@ -55,14 +57,13 @@
                         @*@Ajax.RouteLink("Details", "ProdDetailsPartial", "Customer", 
                             new AjaxOptions { UpdateTargetId = "prodDetailsDiv" }, new { ordNo = item.OrdNo })*@
                         @Html.ActionLink("Details", "ProdDetailsPartial", new { ordNo = item.OrdNo})
-                        <button class="btn btn-success">Details</button>
+                        <button class="btn btn-success renderView">Details</button>
                     </td>
                 </tr>
             }
         </table>
     </div>
     <div id="prodDetailsDiv">
-        @Html.Partial("ProdDetailsPartial", new ProductDetailsList())
     </div>
 </div>
 <p>
