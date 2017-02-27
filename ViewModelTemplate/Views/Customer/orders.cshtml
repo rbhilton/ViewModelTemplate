@@ -8,8 +8,8 @@
 <script>
     $(document).ready(function () {
         $(".renderView").click(function (evt) {
-            var cell = $(evt.target).closest("tr").children().first();
-            var OrdNo = cell.text();
+            var cell = $(evt.target).parents("tr").find("td:first")
+            var OrdNo = cell.text().replace(/[\n]/g, '').replace(/[ ]/g, '')
             $("#prodDetailsDiv").load("/Customer/ProdDetailsPartial", { ordNo: OrdNo });
         });
     });
@@ -64,6 +64,7 @@
         </table>
     </div>
     <div id="prodDetailsDiv">
+        @*@Html.Partial("ProdDetailsPartial", new ProductDetailsList())*@
     </div>
 </div>
 <p>
