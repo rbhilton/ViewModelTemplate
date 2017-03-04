@@ -1,0 +1,27 @@
+﻿@using ViewModelTemplate.Models
+@model ProductDetailsList
+
+<div>
+    <span style="font-weight:bold; text-decoration:underline">Products for Order # @Model.OrdNo</span><br/>
+    <table>
+        <thead>
+            <tr>
+                <th>Product ID</th>
+                <th>Name</th>
+                <th>Quantity</th>
+                <th>Price</th>
+            </tr>           
+        </thead>
+        <tbody>
+            @foreach (var item in Model.productDetailsList)
+            {
+                <tr>
+                    <td>@item.ProdNo</td>
+                    <td>@item.ProdName</td>
+                    <td>@item.Qty</td>
+                    <td>@item.ProdPrice</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

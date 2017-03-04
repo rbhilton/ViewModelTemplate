@@ -1,8 +1,25 @@
-﻿@model ViewModelTemplate.Models.CustomerOrders
+﻿@using ViewModelTemplate.Models
+@model CustomerOrders
 
 @{
     ViewBag.Title = "orders";
 }
+
+<script type="text/javascript">
+    //$(document).ready(function () {
+        function prodDetailsClick(ordNo) {
+            //$(".renderView").click(function (ordNo) {
+
+            //var cell = $(evt.target).parents("tr").find("td:first")
+            //var cell = $(evt.target).closest("tr").children().first();
+            ////var OrdNo = cell.text().replace(/[\n]/g, '').replace(/[ ]/g, '')
+            //var ordNo = cell.text().replace(/(^\s+|\s+$)/g, '');
+            //$("#prodDetailsDiv").load("/Customer/ProdDetailsPartial", { ordNo: OrdNo });
+            $("#prodDetailsDiv").load("/Customer/ProdDetailsPartial", { ordNo: ordNo });
+        }
+        //});
+    //});
+</script>
 
 <h2>Customer Orders</h2>
 
@@ -18,7 +35,7 @@
         @Html.DisplayFor(model => model.customer.CustState) 
         @Html.DisplayFor(model => model.customer.CustZip)
     </div>
-    <div class="col-md-9">
+    <div class="col-md-5">
         <table>
             <tr>
                 <th>@Html.DisplayNameFor(model => model.orders[0].OrdNo)</th>
@@ -30,6 +47,7 @@
                 <tr>
                     <td>
                         @Html.DisplayFor(Modelitem => item.OrdNo)
+                        @*@Html.ActionLink(item.OrdNo, "ProdDetailsPartial", new { ordNo = item.OrdNo })*@
                     </td>
                     <td>@{ 
                         var shortDate = item.OrdDate.ToShortDateString();
@@ -39,11 +57,22 @@
                     <td>
                         @Html.DisplayFor(Modelitem => item.OrdName)
                     </td>
+                    <td>
+                        @*@Ajax.ActionLink("Details", "ProdDetailsPartial", "Customer", new { ordNo = item.OrdNo },
+                            new AjaxOptions { UpdateTargetId = "prodDetailsDiv" } )*@
+                        @*@Ajax.RouteLink("Details", "ProdDetailsPartial", "Customer", 
+                            new AjaxOptions { UpdateTargetId = "prodDetailsDiv" }, new { ordNo = item.OrdNo })*@
+                        @*@Html.ActionLink("Details", "ProdDetailsPartial", new { ordNo = item.OrdNo})*@
+                        <!--<button class="btn btn-success renderView" value="@item.OrdNo">Details</button>-->
+                        <button class="btn btn-info" onclick='prodDetailsClick("@item.OrdNo")'>Details</button>
+                    </td>
                 </tr>
             }
         </table>
     </div>
-    
+    <div id="prodDetailsDiv" class="col-md-offset-7">
+        @*@Html.Partial("ProdDetailsPartial", new ProductDetailsList())*@
+    </div>
 </div>
 <p>
     <br/>
