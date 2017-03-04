@@ -5,15 +5,20 @@
     ViewBag.Title = "orders";
 }
 
-<script>
-    $(document).ready(function () {
-        $(".renderView").click(function (evt) {
-            
-            var cell = $(evt.target).parents("tr").find("td:first")
-            var OrdNo = cell.text().replace(/[\n]/g, '').replace(/[ ]/g, '')
-            $("#prodDetailsDiv").load("/Customer/ProdDetailsPartial", { ordNo: OrdNo });
-        });
-    });
+<script type="text/javascript">
+    //$(document).ready(function () {
+        function prodDetailsClick(ordNo) {
+            //$(".renderView").click(function (ordNo) {
+
+            //var cell = $(evt.target).parents("tr").find("td:first")
+            //var cell = $(evt.target).closest("tr").children().first();
+            ////var OrdNo = cell.text().replace(/[\n]/g, '').replace(/[ ]/g, '')
+            //var ordNo = cell.text().replace(/(^\s+|\s+$)/g, '');
+            //$("#prodDetailsDiv").load("/Customer/ProdDetailsPartial", { ordNo: OrdNo });
+            $("#prodDetailsDiv").load("/Customer/ProdDetailsPartial", { ordNo: ordNo });
+        }
+        //});
+    //});
 </script>
 
 <h2>Customer Orders</h2>
@@ -58,7 +63,8 @@
                         @*@Ajax.RouteLink("Details", "ProdDetailsPartial", "Customer", 
                             new AjaxOptions { UpdateTargetId = "prodDetailsDiv" }, new { ordNo = item.OrdNo })*@
                         @*@Html.ActionLink("Details", "ProdDetailsPartial", new { ordNo = item.OrdNo})*@
-                        <button class="btn btn-success renderView">Details</button>
+                        <!--<button class="btn btn-success renderView" value="@item.OrdNo">Details</button>-->
+                        <button class="btn btn-info" onclick='prodDetailsClick("@item.OrdNo")'>Details</button>
                     </td>
                 </tr>
             }

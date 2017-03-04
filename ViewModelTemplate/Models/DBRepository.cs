@@ -140,10 +140,10 @@ namespace ViewModelTemplate.Models
         public string ProdName { get; set; }
 
         [Display(Name = "Quantity")]
-        public int Qty { get; set; }
+        public int? Qty { get; set; }
 
         [Display(Name = "Price")]
-        public decimal ProdPrice { get; set; }
+        public decimal? ProdPrice { get; set; }
     }
 
     public class ProductDetailsList
